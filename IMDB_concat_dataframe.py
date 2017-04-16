@@ -93,7 +93,7 @@ if __name__ == "__main__":
             if model.endswith('.txt'):
                 if ('cbow 0' in model):
                     par_list = []
-                    string = model.split(".")[0]
+                    string = model.split(".txt")[0]
                     implementation = string.split()[0]
                     
 
@@ -102,7 +102,7 @@ if __name__ == "__main__":
                     for other_model in os.listdir(space_dir[model_name]):
                         if other_model.endswith('.txt'):
                             if ('cbow 1' in other_model):
-                                other_model = other_model.split(".")[0]
+                                other_model = other_model.split(".txt")[0]
                                 for column in parameters:
                                     i = other_model.find(column)
                         
