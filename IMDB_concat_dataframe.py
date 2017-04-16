@@ -102,35 +102,38 @@ if __name__ == "__main__":
                     for other_model in os.listdir(space_dir[model_name]):
                         if other_model.endswith('.txt'):
                             if ('cbow 1' in other_model):
+                                consider = True
                                 other_model = other_model.split(".txt")[0]
                                 for column in parameters:
                                     i = other_model.find(column)
                         
                                     if (i != -1):
                                         if (column + ' ' + other_model[i:].split()[1]) not in par_list:
+                                            consider = False
                                             break
                                     else:
                                         if (column + ' -1') not in par_list:
+                                            consider = False
                                             break
-
+                                if (not consider):
+                                    continue
                                 index += 1
-
-                                df.set_value(index, 'implementation', implementation)
-                                df.set_value(index, 'threads', threads)#TODO
-                                df.set_value(index, 'min_count', min_count)#TODO
-
                                 for column in parameters:    
                                     i = string.find(column)
                                     
                                     if (i != -1):
                                         value = string[i:].split()[1]
-                                        
+                                        if (int(value) == 300):
+                                            consider = False
+                                            break
                                         df.set_value(index, column, value)
                                         par_list += [column + ' ' + value]
                                     else:
                                         df.set_value(index, column, default_parameters[column])
                                         par_list += [column + ' -1']
-
+                                if (not consider):
+                                    continue
+                                    
                                 i = string.find('sample')
                                 if (i != -1):
                                     value = string[i:].split()[1]
@@ -159,6 +162,9 @@ if __name__ == "__main__":
                                     accuracy, best = Classification(classifier, DocumentVectors0, y_1+y_0, DocumentVectors1, y_1+y_0)
                                     df.set_value(index, classifier, accuracy)
                                     df.set_value(index, 'best_parameters', best)
+                                df.set_value(index, 'implementation', implementation)
+                                df.set_value(index, 'threads', threads)#TODO
+                                df.set_value(index, 'min_count', min_count)#TODO
                     df.to_csv("Results_concat_IMDB.csv")
 
     df.to_csv("Results_concat_IMDB.csv")
