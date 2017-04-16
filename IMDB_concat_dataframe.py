@@ -104,9 +104,6 @@ if __name__ == "__main__":
 
                         if (i != -1):
                             value = string[i:].split()[1]
-                            if (int(value) == 300):
-                                consider = False
-                                break
                             par_list += [column + ' ' + value]
                         else:
                             par_list += [column + ' -1']
