@@ -26,7 +26,7 @@ def DocumentVectors(model, model_name):
         DocumentVectors1 = [model_d2v.docvecs['SENT_'+str(i+1)] for i in range(25000, 50000)]
         #print model_d2v.docvecs.doctags
         
-    return (DocumentVectors0, train_labels, DocumentVectors1, test_labels)
+    return (DocumentVectors0, DocumentVectors1)
 
 def Classification(classifier, train, train_labels, test, test_labels):
     grid_search = GridSearchCV(classifiers_dict[classifier], param_grid = search_parameters[classifier], error_score=0.0, n_jobs = -1)
@@ -147,15 +147,16 @@ if __name__ == "__main__":
                                 else:
                                     df.set_value(index, 'cbow1_sample', '1e-4')
 
-                                DocumentVectors0_0, train_labels, DocumentVectors1_0, test_labels = DocumentVectors(space_dir[model_name]+model, model_name)
-                                DocumentVectors0_1, train_labels, DocumentVectors1_1, test_labels = DocumentVectors(space_dir[model_name]+other_model+'.txt', model_name)
-                                
+                                DocumentVectors0_0, DocumentVectors1_0 = DocumentVectors(space_dir[model_name]+model, model_name)
+                                DocumentVectors0_1, DocumentVectors1_1 = DocumentVectors(space_dir[model_name]+other_model+'.txt', model_name)
+                                y_1 = [1] * 12500
+                                y_0 = [0] * 12500
                                 DocumentVectors0 = np.concatenate((DocumentVectors0_0, DocumentVectors0_1), axis=1)
                                 DocumentVectors1 = np.concatenate((DocumentVectors1_0, DocumentVectors1_1), axis=1)
 
                                 for classifier in classifiers:
                                     
-                                    accuracy, best = Classification(classifier, DocumentVectors0, train_labels, DocumentVectors1, test_labels)
+                                    accuracy, best = Classification(classifier, DocumentVectors0, y_1+y_0, DocumentVectors1, y_1+y_0)
                                     df.set_value(index, classifier, accuracy)
                                     df.set_value(index, 'best_parameters', best)
                     df.to_csv("Results_concat_IMDB.csv")
