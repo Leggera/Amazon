@@ -171,5 +171,6 @@ if __name__ == "__main__":
                                 df.set_value(index, 'threads', threads)#TODO
                                 df.set_value(index, 'min_count', min_count)#TODO
                     df.to_csv("Results_concat_IMDB.csv")
+                    print(model)
 
     df.to_csv("Results_concat_IMDB.csv")
