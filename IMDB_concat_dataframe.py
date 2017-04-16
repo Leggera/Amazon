@@ -64,7 +64,7 @@ if __name__ == "__main__":
     min_c= ['min_count']#TODO
     classifiers = ['SklearnLogReg', 'SklearnLinearSVC']#, 'SklearnMLP'
     d3 = ['threads']
-    best_params = ['best_parameters']
+    best_params = ['best_parametersSklearnLogReg', 'best_parametersSklearnLinearSVC']
     df= pd.DataFrame(columns = d0+columns+min_c+classifiers+best_params + d3)
     
     default_parameters = dict()
@@ -169,7 +169,7 @@ if __name__ == "__main__":
                                     
                                     accuracy, best = Classification(classifier, DocumentVectors0, y_1+y_0, DocumentVectors1, y_1+y_0)
                                     df.set_value(index, classifier, accuracy)
-                                    df.set_value(index, 'best_parameters', best)
+                                    df.set_value(index, 'best_parameters'+classifier, best)
                                 df.set_value(index, 'implementation', implementation)
                                 df.set_value(index, 'threads', threads)#TODO
                                 df.set_value(index, 'min_count', min_count)#TODO
