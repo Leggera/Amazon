@@ -22,7 +22,7 @@ def DocumentVectors(model, model_name):
         try:
             model_d2v = Doc2Vec.load(model)
         except:
-            print (model_name)
+            print (model)
             exit()
         DocumentVectors0 = [model_d2v.docvecs['SENT_'+str(i+1)] for i in range(0, 25000)]
         DocumentVectors1 = [model_d2v.docvecs['SENT_'+str(i+1)] for i in range(25000, 50000)]
