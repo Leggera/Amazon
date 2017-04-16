@@ -19,9 +19,11 @@ def DocumentVectors(model, model_name):
         DocumentVectors0 = [model_w2v[w] for w in vec_vocab[:25000]]
         DocumentVectors1 = [model_w2v[w] for w in vec_vocab[25000:50000]]
     elif(model_name == "doc2vec"): #TODO
-        
-        model_d2v = Doc2Vec.load(model)
-            
+        try:
+            model_d2v = Doc2Vec.load(model)
+        except:
+            print (model_name)
+            exit()
         DocumentVectors0 = [model_d2v.docvecs['SENT_'+str(i+1)] for i in range(0, 25000)]
         DocumentVectors1 = [model_d2v.docvecs['SENT_'+str(i+1)] for i in range(25000, 50000)]
         #print model_d2v.docvecs.doctags
