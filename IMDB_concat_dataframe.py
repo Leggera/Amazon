@@ -31,7 +31,7 @@ def DocumentVectors(model, model_name):
     return (DocumentVectors0, DocumentVectors1)
 
 def Classification(classifier, train, train_labels, test, test_labels):
-    grid_search = GridSearchCV(classifiers_dict[classifier], param_grid = search_parameters[classifier], error_score=0.0, n_jobs = -1)
+    grid_search = GridSearchCV(classifiers_dict[classifier], param_grid = search_parameters[classifier], verbose = 0, error_score=0.0, n_jobs = -1)
     t0 = time()
     grid_search.fit(train, train_labels)
     print("done in %0.3fs" % (time() - t0))
