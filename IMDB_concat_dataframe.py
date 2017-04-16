@@ -94,6 +94,7 @@ if __name__ == "__main__":
         for model in os.listdir(space_dir[model_name]):
             if model.endswith('.txt'):
                 if ('cbow 0' in model):
+                    consider = True
                     par_list = []
                     string = model.split(".txt")[0]
                     implementation = string.split()[0]
@@ -104,11 +105,13 @@ if __name__ == "__main__":
                         if (i != -1):
                             value = string[i:].split()[1]
                             if (int(value) == 300):
-                                continue
+                                consider = False
+                                break
                             par_list += [column + ' ' + value]
                         else:
                             par_list += [column + ' -1']
-                    
+                    if (not consider):
+                        continue
 
                     for other_model in os.listdir(space_dir[model_name]):
                         if other_model.endswith('.txt'):
