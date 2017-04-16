@@ -98,7 +98,16 @@ if __name__ == "__main__":
                     string = model.split(".txt")[0]
                     implementation = string.split()[0]
                     
+                    for column in parameters:    
+                        i = string.find(column)
 
+                        if (i != -1):
+                            value = string[i:].split()[1]
+                            if (int(value) == 300):
+                                continue
+                            par_list += [column + ' ' + value]
+                        else:
+                            par_list += [column + ' -1']
                     
 
                     for other_model in os.listdir(space_dir[model_name]):
@@ -120,22 +129,16 @@ if __name__ == "__main__":
                                 if (not consider):
                                     continue
                                 index += 1
+                                    
                                 for column in parameters:    
                                     i = string.find(column)
-                                    
+
                                     if (i != -1):
                                         value = string[i:].split()[1]
-                                        if (int(value) == 300):
-                                            consider = False
-                                            break
                                         df.set_value(index, column, value)
-                                        par_list += [column + ' ' + value]
                                     else:
                                         df.set_value(index, column, default_parameters[column])
-                                        par_list += [column + ' -1']
-                                if (not consider):
-                                    continue
-                                    
+                                
                                 i = string.find('sample')
                                 if (i != -1):
                                     value = string[i:].split()[1]
