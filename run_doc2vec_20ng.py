@@ -91,7 +91,7 @@ if __name__ == "__main__":
             
             split = subset
             sentiment =  newsgroups_data.target[news_no]
-            tags = ['SENT_'+ str(news_no) + " " + str(sentiment)]
+            tags = [subset + ' ' + 'SENT_'+ str(news_no) + " " + str(sentiment)]
 
             docs.append(SentimentDocument(tokens, tags, split, sentiment))
         return docs
