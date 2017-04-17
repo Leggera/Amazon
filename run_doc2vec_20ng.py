@@ -78,7 +78,7 @@ if __name__ == "__main__":
 
     from sklearn.datasets import fetch_20newsgroups
     def get_data(subset):
-        newsgroups_data = fetch_20newsgroups(subset=subset, remove=('headers', 'footers', 'quotes'))
+        newsgroups_data = fetch_20newsgroups(subset=subset, remove=('headers', 'footers', 'quotes'), download_if_missing=False)
         docs = []
         for news_no, news in enumerate(newsgroups_data.data):    
             tokens = gensim.utils.to_unicode(normalize_text(news)).split()
