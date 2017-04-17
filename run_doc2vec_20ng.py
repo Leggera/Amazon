@@ -75,7 +75,7 @@ if __name__ == "__main__":
     cores = int(args.threads)
     min_count = int(args.min_count)
     output = args.output
-    home_20 = args.train
+    home_20 = "../scikit_learn_data/20news_home/"
 
     SentimentDocument = namedtuple('SentimentDocument', 'words tags split sentiment')
 
