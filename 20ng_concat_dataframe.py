@@ -24,7 +24,8 @@ def DocumentVectors(model, model_name):
             model_d2v = Doc2Vec.load(model)
             
             
-        except AttributeError:
+        except:
+            print ("trouble loading model")
             print (model)
             exit()
         #print model_d2v.docvecs.doctags
@@ -34,8 +35,12 @@ def DocumentVectors(model, model_name):
         test_labels = [tag.split()[2] for tag in model_d2v.docvecs.doctags if 'test' in tag] 
     return (DocumentVectors0, train_labels, DocumentVectors1, test_labels)
 
-def Classification(classifier, train, train_labels, test, test_labels):
-    grid_search = GridSearchCV(classifiers_dict[classifier], param_grid = search_parameters[classifier], error_score=0.0, n_jobs = -1)
+def Classification(model, classifier, train, train_labels, test, test_labels):
+    try:
+        grid_search = GridSearchCV(classifiers_dict[classifier], param_grid = search_parameters[classifier], error_score=0.0, n_jobs = -1)
+    except:
+        print ("trouble gridsearching")
+        print (model)
     t0 = time()
     grid_search.fit(train, train_labels)
     print("done in %0.3fs" % (time() - t0))
@@ -171,7 +176,7 @@ if __name__ == "__main__":
 
                                 for classifier in classifiers:
                                     
-                                    accuracy, best = Classification(classifier, DocumentVectors0, train_labels, DocumentVectors1, test_labels)
+                                    accuracy, best = Classification(model, classifier, DocumentVectors0, train_labels, DocumentVectors1, test_labels)
                                     df.set_value(index, classifier, accuracy)
                                     df.set_value(index, 'best_parameters', best)
                     df.to_csv("Results_concat_20ng_second.csv")
