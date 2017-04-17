@@ -26,8 +26,7 @@ def DocumentVectors(model, model_name):
             
         except AttributeError:
             print (model)
-            nil = np.array([0] * 25000).reshape(-1, 1)
-            return (nil, nil)
+            exit()
         #print model_d2v.docvecs.doctags
         DocumentVectors0 = np.array([model_d2v.docvecs[tag] for tag in model_d2v.docvecs.doctags if 'train' in tag])
         DocumentVectors1 = np.array([model_d2v.docvecs[tag] for tag in model_d2v.docvecs.doctags if 'test' in tag])
