@@ -41,6 +41,7 @@ def Classification(model, classifier, train, train_labels, test, test_labels):
     except:
         print ("trouble gridsearching")
         print (model)
+        exit()
     t0 = time()
     grid_search.fit(train, train_labels)
     print("done in %0.3fs" % (time() - t0))
