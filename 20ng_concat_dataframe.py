@@ -72,14 +72,13 @@ if __name__ == "__main__":
     columns = ['size', 'alpha', 'window', 'negative', 'cbow0_sample', 'cbow1_sample']
     min_c= ['min_count']#TODO
     classifiers = ['SklearnLogReg', 'SklearnLinearSVC']#, 'SklearnMLP'
-    d3 = ['time', 'threads']
+    d3 = ['threads']
     best_params = ['best_parameters']
     df= pd.DataFrame(columns = d0+columns+min_c+classifiers+best_params + d3)
     
     default_parameters = dict()
     classifiers_dict=dict()
     search_parameters = dict()
-    time_dir = dict()
     space_dir = dict()
     
     default_parameters['size'] = 150
@@ -96,11 +95,8 @@ if __name__ == "__main__":
     #search_parameters['SklearnMLP'] = {'solver' : ('lbfgs', 'sgd', 'adam')}#TODO
     search_parameters['SklearnLinearSVC'] = {'loss' : ('hinge', 'squared_hinge'), 'penalty': ('l1', 'l2'), 'dual': (False, True), 'fit_intercept': (True, False), 'intercept_scaling': (1, 2, 3),  'max_iter': (100, 200, 400, 800, 1000), 'multi_class': ('ovr', 'crammer_singer')}
     
-    
-    time_dir["word2vec_c"] = "time_w2v_20ng/"
-    time_dir["doc2vec"] = "time_p2v_20ng/"
     space_dir["word2vec_c"] = "space_w2v_20ng/"
-    space_dir["doc2vec"] = "space_p2v_20ng/"
+    space_dir["doc2vec"] = "diploma/"
     
     index  = 0
     for model_name in [ "doc2vec"]: #TODO
