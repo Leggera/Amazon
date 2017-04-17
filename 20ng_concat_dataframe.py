@@ -176,8 +176,12 @@ if __name__ == "__main__":
                                 DocumentVectors1 = np.concatenate((DocumentVectors1_0, DocumentVectors1_1), axis=1)
 
                                 for classifier in classifiers:
-                                    
-                                    accuracy, best = Classification(model, classifier, DocumentVectors0, train_labels, DocumentVectors1, test_labels)
+                                    try:
+                                        accuracy, best = Classification(model, classifier, DocumentVectors0, train_labels, DocumentVectors1, test_labels)
+                                    except:
+                                        print ("classification problem")
+                                        print (model)
+                                        exit()
                                     df.set_value(index, classifier, accuracy)
                                     df.set_value(index, 'best_parameters', best)
                     df.to_csv("Results_concat_20ng_second.csv")
