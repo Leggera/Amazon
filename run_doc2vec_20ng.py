@@ -61,6 +61,7 @@ if __name__ == "__main__":
     parser.add_argument("-output")
     parser.add_argument("-threads")
     parser.add_argument("-min_count")
+    parser.add_argument("-train")
     args = parser.parse_args()
     
     dm = int(args.cbow)
@@ -73,12 +74,13 @@ if __name__ == "__main__":
     cores = int(args.threads)
     min_count = int(args.min_count)
     output = args.output
+    home_20 = args.train
 
     SentimentDocument = namedtuple('SentimentDocument', 'words tags split sentiment')
 
     from sklearn.datasets import fetch_20newsgroups
     def get_data(subset):
-        newsgroups_data = fetch_20newsgroups(subset=subset, remove=('headers', 'footers', 'quotes'), download_if_missing=False)
+        newsgroups_data = fetch_20newsgroups(data_home = home_20, subset=subset, remove=('headers', 'footers', 'quotes'), download_if_missing=False)
         docs = []
         for news_no, news in enumerate(newsgroups_data.data):    
             tokens = gensim.utils.to_unicode(normalize_text(news)).split()
