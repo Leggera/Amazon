@@ -166,8 +166,13 @@ if __name__ == "__main__":
 
                                 DocumentVectors0_0, train_labels, DocumentVectors1_0, test_labels = DocumentVectors(space_dir[model_name]+model, model_name)
                                 DocumentVectors0_1, train_labels, DocumentVectors1_1, test_labels = DocumentVectors(space_dir[model_name]+other_model+'.txt', model_name)
-                                
-                                DocumentVectors0 = np.concatenate((DocumentVectors0_0, DocumentVectors0_1), axis=1)
+                                try:
+                                    DocumentVectors0 = np.concatenate((DocumentVectors0_0, DocumentVectors0_1), axis=1)
+                                except:
+                                    print (DocumentVectors0_0.shape)
+                                    print (DocumentVectors0_1.shape)
+                                    print (DocumentVectors1_0.shape)
+                                    print (DocumentVectors1_1.shape)
                                 DocumentVectors1 = np.concatenate((DocumentVectors1_0, DocumentVectors1_1), axis=1)
 
                                 for classifier in classifiers:
