@@ -173,6 +173,8 @@ if __name__ == "__main__":
                                     print (DocumentVectors0_1.shape)
                                     print (DocumentVectors1_0.shape)
                                     print (DocumentVectors1_1.shape)
+                                    print (model)
+                                    print (other_model)
                                 DocumentVectors1 = np.concatenate((DocumentVectors1_0, DocumentVectors1_1), axis=1)
 
                                 for classifier in classifiers:
