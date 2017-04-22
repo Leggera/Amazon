@@ -84,10 +84,10 @@ if __name__ == "__main__":
     classifiers_dict['SklearnLinearSVC'] = LinearSVC()
     #classifiers_dict['StatModelsLogReg'] = sm.Logit()
     
-    search_parameters['SklearnLogReg'] = {'C' : ( 10**-5, 3*10**-5, 10**-4, 3*10**-4), 'max_iter': (100, 200, 400, 800, 1000)}
+    search_parameters['SklearnLogReg'] = {'C' : ( 10**-5, 3*10**-5, 10**-4, 3*10**-4), 'loss' : ('hinge', 'squared_hinge'), 'penalty': ('l1', 'l2'), 'dual': (False, True), 'fit_intercept': (True, False), 'intercept_scaling': (1, 2, 3), 'max_iter': (100, 200, 400, 800, 1000)}
     #search_parameters['SklearnLogReg'] = {'solver' : ('newton-cg', 'lbfgs', 'liblinear', 'sag'), 'penalty': ('l1', 'l2'), 'dual': (False, True), 'fit_intercept': (True, False), 'intercept_scaling': (1, 2, 3), 'max_iter': (100, 200, 400, 800, 1000)}
     #search_parameters['SklearnMLP'] = {'solver' : ('lbfgs', 'sgd', 'adam')}#TODO
-    search_parameters['SklearnLinearSVC'] = {'C' : ( 10**-5, 3*10**-5, 10**-4, 3*10**-4), 'max_iter': (100, 200, 400, 800, 1000)}
+    search_parameters['SklearnLinearSVC'] = {'C' : ( 10**-5, 3*10**-5, 10**-4, 3*10**-4), 'loss' : ('hinge', 'squared_hinge'), 'penalty': ('l1', 'l2'), 'dual': (False, True), 'fit_intercept': (True, False), 'intercept_scaling': (1, 2, 3), 'max_iter': (100, 200, 400, 800, 1000)}
     #search_parameters['SklearnLinearSVC'] = {'loss' : ('hinge', 'squared_hinge'), 'penalty': ('l1', 'l2'), 'dual': (False, True), 'fit_intercept': (True, False), 'intercept_scaling': (1, 2, 3),  'max_iter': (100, 200, 400, 800, 1000)}
     
     space_dir["word2vec_c"] = "space_w2v/"
