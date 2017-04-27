@@ -1,5 +1,4 @@
 sudo apt-get install htop
-    3  sudo apt-get install --fix-missing  gitsudo apt-get update
     4  sudo apt-get update
     5  #!/usr/bin/env bash
     6  export LC_ALL="en_US.UTF-8"
@@ -23,4 +22,4 @@ sudo apt-get install htop
    31  cd ../
    48  git clone https://github.com/Leggera/Amazon.git
    58  sudo pip3 install gensim
-   64  nohup python3 Amazon/IMDB_concat_dataframe.py &
+   64  sudo nohup python3 Amazon/IMDB_concat_dataframe.py &
