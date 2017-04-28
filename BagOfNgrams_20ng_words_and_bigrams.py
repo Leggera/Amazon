@@ -50,9 +50,11 @@ if __name__ == "__main__":
 
     vectorizer = TfidfVectorizer(ngram_range = (1, 2))
     DocumentVectors0 = vectorizer.fit_transform(newsgroups_train.data)
+    print (DocumentVectors0.shape)
 
     DocumentVectors1 = vectorizer.transform(newsgroups_test.data)
-
+    print (DocumentVectors1.shape)
+    exit()
     df = pd.DataFrame(columns = classifiers+best_params)
 
     for classifier in classifiers:             
