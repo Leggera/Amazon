@@ -14,6 +14,7 @@ def Classification(classifier, train, train_labels, test, test_labels):
     t0 = time()
     grid_search.fit(train, train_labels)
     print("done in %0.3fs" % (time() - t0))
+    print ("h")
     #print("Best score: %0.3f" % grid_search.best_score_)
     best_parameters = grid_search.best_estimator_.get_params()
     k = ""
@@ -59,5 +60,6 @@ if __name__ == "__main__":
         accuracy, best = Classification(classifier, DocumentVectors0, newsgroups_train.target, DocumentVectors1, newsgroups_test.target)
         df.set_value(index, classifier, accuracy)
         df.set_value(index, 'best_parameters'+classifier, best)
-
+        print (best)
+        print (accuracy)
     df.to_csv("BagOfNgrams_20ng_words_and_bigrams.csv")
