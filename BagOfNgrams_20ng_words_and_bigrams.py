@@ -58,8 +58,8 @@ if __name__ == "__main__":
 
     for classifier in classifiers:             
         accuracy, best = Classification(classifier, DocumentVectors0, newsgroups_train.target, DocumentVectors1, newsgroups_test.target)
-        df.set_value(index, classifier, accuracy)
-        df.set_value(index, 'best_parameters'+classifier, best)
+        df.set_value(0, classifier, accuracy)
+        df.set_value(0, 'best_parameters'+classifier, best)
         print (best)
         print (accuracy)
     df.to_csv("BagOfNgrams_20ng_words_and_bigrams.csv")
