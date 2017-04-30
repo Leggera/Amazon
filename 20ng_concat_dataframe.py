@@ -99,7 +99,7 @@ if __name__ == "__main__":
     #search_parameters['SklearnLinearSVC'] = {'loss' : ('hinge', 'squared_hinge'), 'penalty': ('l1', 'l2'), 'dual': (False, True), 'fit_intercept': (True, False), 'intercept_scaling': (1, 2, 3),  'max_iter': (100, 200, 400, 800, 1000), 'multi_class': ('ovr', 'crammer_singer')}
     
     space_dir["word2vec_c"] = "space_w2v_20ng/"
-    space_dir["doc2vec"] = "diploma/"
+    space_dir["doc2vec"] = "newsgroups/"
     
     index  = 0
     for model_name in [ "doc2vec"]: #TODO
