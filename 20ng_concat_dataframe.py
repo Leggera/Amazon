@@ -197,4 +197,4 @@ if __name__ == "__main__":
                     df.to_csv("Results_concat_20ng_second.csv")
                     print (model)
 
-    df.to_csv("Results_concat_20ng_second.csv")
+    df.to_csv("Results_concat_20ng_proper_reg.csv")
