@@ -194,7 +194,7 @@ if __name__ == "__main__":
                                         exit()
                                     df.set_value(index, classifier, accuracy)
                                     df.set_value(index, 'best_parameters', best)
-                    df.to_csv("Results_concat_20ng_second.csv")
+                    df.to_csv("Results_concat_20ng_proper_reg.csv")
                     print (model)
 
     df.to_csv("Results_concat_20ng_proper_reg.csv")
