@@ -64,7 +64,7 @@ if __name__ == "__main__":
     parameters = ['size', 'alpha', 'window', 'negative']
     columns = ['size', 'alpha', 'window', 'negative', 'cbow0_sample', 'cbow1_sample']
     min_c= ['min_count']#TODO
-    classifiers = ['SklearnLogReg', 'SklearnLinearSVC']#, 'SklearnMLP'
+    classifiers = ['SklearnLogReg']#, 'SklearnLinearSVC']#, 'SklearnMLP'
     d3 = ['threads']
     best_params = ['best_parametersSklearnLogReg', 'best_parametersSklearnLinearSVC']
     df= pd.DataFrame(columns = d0+columns+min_c+classifiers+best_params + d3)
@@ -84,8 +84,8 @@ if __name__ == "__main__":
     classifiers_dict['SklearnLinearSVC'] = LinearSVC()
     #classifiers_dict['StatModelsLogReg'] = sm.Logit()
     
-    search_parameters['SklearnLogReg'] = {'C': (10**-5, 3*10**-5, 10**-4, 3*10**-4, 10**-3, 3*10**-3,10**-2, 3*10**-2,10**-1, 3*10**-1, 1), 'max_iter': (100, 200, 400, 800, 1000)}
-    #search_parameters['SklearnLogReg'] = {'solver' : ('newton-cg', 'lbfgs', 'liblinear', 'sag'), 'penalty': ('l1', 'l2'), 'dual': (False, True), 'fit_intercept': (True, False), 'intercept_scaling': (1, 2, 3), 'max_iter': (100, 200, 400, 800, 1000)}
+    #search_parameters['SklearnLogReg'] = {'C': (10**-5, 3*10**-5, 10**-4, 3*10**-4, 10**-3, 3*10**-3,10**-2, 3*10**-2,10**-1, 3*10**-1, 1), 'max_iter': (100, 200, 400, 800, 1000)}
+    search_parameters['SklearnLogReg'] = {'C': (10**-5, 3*10**-5, 10**-4, 3*10**-4, 10**-3, 3*10**-3,10**-2, 3*10**-2,10**-1, 3*10**-1, 1), 'solver' : ('newton-cg', 'lbfgs', 'liblinear', 'sag'), 'penalty': ('l1', 'l2'), 'dual': (False, True), 'fit_intercept': (True, False), 'intercept_scaling': (1, 2, 3), 'max_iter': (100, 200, 400, 800, 1000)}
     #search_parameters['SklearnMLP'] = {'solver' : ('lbfgs', 'sgd', 'adam')}#TODO
     search_parameters['SklearnLinearSVC'] = {'C': (10**-5, 3*10**-5, 10**-4, 3*10**-4, 10**-3, 3*10**-3,10**-2, 3*10**-2,10**-1, 3*10**-1, 1), 'max_iter': (100, 200, 400, 800, 1000)}
     #search_parameters['SklearnLinearSVC'] = {'loss' : ('hinge', 'squared_hinge'), 'penalty': ('l1', 'l2'), 'dual': (False, True), 'fit_intercept': (True, False), 'intercept_scaling': (1, 2, 3),  'max_iter': (100, 200, 400, 800, 1000)}
@@ -174,7 +174,7 @@ if __name__ == "__main__":
                                 df.set_value(index, 'implementation', implementation)
                                 df.set_value(index, 'threads', threads)#TODO
                                 df.set_value(index, 'min_count', min_count)#TODO
-                                df.to_csv("Results_concat_IMDB_proper.csv")
+                                df.to_csv("Results_concat_IMDB_proper_newreg.csv")
                     print(model)
 
-    df.to_csv("Results_concat_IMDB_proper.csv")
+    df.to_csv("Results_concat_IMDB_proper_newreg.csv")
