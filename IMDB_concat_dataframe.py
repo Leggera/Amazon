@@ -47,7 +47,7 @@ def Classification(classifier, train, train_labels, test, test_labels):
     train_prediction = grid_search.predict(train)
     train_accuracy = sum(train_prediction == train_labels)/len(train_labels)
     train_scores = (classification_report(train_labels, train_prediction)).split('\n')
-    train_score =  ' '.join(train_scores[0].lstrip().split(' ')[:-1]) +'\n' + ' '.join(test_scores[-2].split(' ')[3:-1])
+    train_score =  ' '.join(train_scores[0].lstrip().split(' ')[:-1]) +'\n' + ' '.join(train_scores[-2].split(' ')[3:-1])
     test_accuracy = sum(test_prediction == test_labels)/len(test_labels)
     return 'cv %.3f test %.3f train %.3f' % (grid_search.best_score_, test_accuracy, train_accuracy) + '\n' + 'train: ' + train_score + '\n' + 'test: ' + test_score, k[:-1]
     
