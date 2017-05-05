@@ -171,10 +171,10 @@ if __name__ == "__main__":
                                     accuracy, best = Classification(classifier, DocumentVectors0, y_1+y_0, DocumentVectors1, y_1+y_0)
                                     df.set_value(index, classifier, accuracy)
                                     df.set_value(index, 'best_parameters'+classifier, best)
+                                    df.to_csv("Results_concat_IMDB_proper_newreg.csv")
                                 df.set_value(index, 'implementation', implementation)
                                 df.set_value(index, 'threads', threads)#TODO
-                                df.set_value(index, 'min_count', min_count)#TODO
-                                df.to_csv("Results_concat_IMDB_proper_newreg.csv")
+                                df.set_value(index, 'min_count', min_count)#TODO         
                     print(model)
 
     df.to_csv("Results_concat_IMDB_proper_newreg.csv")
