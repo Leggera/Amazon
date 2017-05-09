@@ -56,11 +56,10 @@ for model in "${default_models[@]}"; do
         python3 run_doc2vec_proper.py -output "$d2v_IMDB_fold""$d2v_out" -train pretrain_data/alldata-id.txt $min_count $model $default_parameters &
         #python3 run_doc2vec_20ng.py -output "$_20ng_fold""$d2v_out" $min_count $model $default_parameters &    
     done
-    wait
     c_out="$C_IMDB_fold""word2vec ""$model"".txt"
     delete='-threads 1'
     d_p=${default_parameters[@]/$delete}
-    ./word2vec -train pretrain_data/alldata-id.txt -output "$c_out" $model $d_p -threads 32 -binary 0 -min-count 1 -sentence-vectors 1
+    ./word2vec -train pretrain_data/alldata-id.txt -output "$c_out" $model $d_p -threads 30 -binary 0 -min-count 1 -sentence-vectors 1
 done
 wait
 
