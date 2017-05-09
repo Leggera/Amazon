@@ -28,6 +28,7 @@ def run_doc2vec(train_docs, test_docs, alldocs, dm, size, window, alpha, negativ
 
         model.train_words = False
         model.train_labels = True
+        model.learn_hidden = False
         model.train(test_docs, total_examples = len(test_docs), epochs = model.iter)
     model.save(output)
     print("END %s" % str(datetime.datetime.now()))
