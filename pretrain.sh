@@ -66,6 +66,7 @@ for model in "${default_models[@]}"; do
     delete='-threads 1'
     d_p=${default_parameters[@]/$delete}
     ./word2vec -train pretrain_data/alldata-id.txt -output "$c_out" $model $d_p -threads 30 -binary 0 -min-count 1 -sentence-vectors 1
+    wait
 done
 wait
 
