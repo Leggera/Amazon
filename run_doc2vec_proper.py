@@ -2,36 +2,33 @@ import gensim
 from collections import namedtuple
 from run_doc2vec import run_doc2vec
 import argparse
-from sklearn.datasets import fetch_20newsgroups
 
-def normalize_text(text):
-    norm_text = text.lower()
+def load_data():
 
-    # Replace breaks with spaces
-    norm_text = norm_text.replace('<br />', ' ')
-
-    # Pad punctuation with spaces on both sides
-    for char in ['.', '"', ',', '(', ')', '!', '?', ';', ':']:
-        norm_text = norm_text.replace(char, ' ' + char + ' ')
-
-    return norm_text
-
-def get_data(subset):
     SentimentDocument = namedtuple('SentimentDocument', 'words tags split sentiment')
-    newsgroups_data = fetch_20newsgroups(subset=subset, remove=('headers', 'footers', 'quotes'), download_if_missing=True)
-    docs = []
-    for news_no, news in enumerate(newsgroups_data.data):    
-        tokens = gensim.utils.to_unicode(normalize_text(news)).split()
-        
-        if len(tokens) == 0:
-            continue
-        
-        split = subset
-        sentiment =  newsgroups_data.target[news_no]
-        tags = [subset + ' ' + 'SENT_'+ str(news_no) + " " + str(sentiment)]
 
-        docs.append(SentimentDocument(tokens, tags, split, sentiment))
-    return docs
+    alldocs = []  # will hold all docs in original order
+
+    with open(corpora, 'r') as alldata:
+        for line_no, line in enumerate(alldata):
+            tokens = gensim.utils.to_unicode(line).split()
+            words = tokens[1:]
+            tags = ['SENT_'+ str(line_no)] # `tags = [tokens[0]]` would also work at extra memory cost
+            if (line_no < 25000):
+                split = 'train'
+                sentiment = [1.0, 0.0][line_no//12500]
+            elif (line_no < 50000):
+                split = 'test'
+                sentiment = [1.0, 0.0, 1.0, 0.0][line_no//12500]#
+            else:
+                split = 'extra'
+                sentiment = None
+             # [12.5K pos, 12.5K neg]*2 then unknown
+            alldocs.append(SentimentDocument(words, tags, split, sentiment))
+
+    train_docs = [doc for doc in alldocs if (doc.split == 'train' or doc.split == 'extra')]
+    test_docs = [doc for doc in alldocs if doc.split == 'test']
+    return train_docs, test_docs, alldocs
 
 if __name__ == "__main__":
 
@@ -46,13 +43,19 @@ if __name__ == "__main__":
     parser.add_argument("-output", help = 'file to save trained model to')
     parser.add_argument("-threads", nargs='?', default='4', help = 'number of parallel processes')
     parser.add_argument("-min_count", nargs='?', default='5', help = 'minimal word frequency threshold')
-    
-    args = parser.parse_args()
 
+    parser.add_argument("-train", help = 'path to the corpora')
+
+    args = parser.parse_args()
+    
+    corpora = args.train
+    if (corpora is None):
+        parser.error('You need to pass corpora file name to the -train parameter')
     output = args.output
     if (output is None):
         parser.error('You need to pass output file name to the -output parameter')
 
+    
     dm = int(args.cbow)
     size = int(args.size)
     window = int(args.window)
@@ -61,15 +64,11 @@ if __name__ == "__main__":
     alpha = float(args.alpha)
     passes = int(args.iter)
     cores = int(args.threads)
-    min_count = int(args.min_count)
     
+    min_count = int(args.min_count)
 
-    train_docs = get_data('train')
-    test_docs = get_data('test')
-
-    alldocs = train_docs + test_docs
+    train_docs, test_docs, alldocs = load_data()
 
     print('%d docs: %d train-sentiment, %d test-sentiment' % (len(alldocs), len(train_docs), len(test_docs)))
-
+    #cores = multiprocessing.cpu_count()
     run_doc2vec(train_docs, test_docs, alldocs, dm, size, window, alpha, negative, sample, cores, min_count, passes, output)
-
