@@ -55,23 +55,30 @@ d2v_IMDB_fold="d2v_pretrained_IMDB/"
 mkdir C_pretrained_IMDB
 C_IMDB_fold="C_pretrained_IMDB/"
 
+if false;
+	echo "NO"
+	for model in "${default_models[@]}"; do
+	    for min_count in "${min_counts[@]}"; do
+		d2v_out="doc2vec ""$model""$min_count"".txt"
+		python3 run_doc2vec_proper.py -output "$d2v_IMDB_fold""$d2v_out" -train pretrain_data/alldata-id.txt $min_count $model $default_parameters &
+		#python3 run_doc2vec_20ng.py -output "$_20ng_fold""$d2v_out" $min_count $model $default_parameters &    
+	    done
+	    c_out="$C_IMDB_fold""word2vec ""$model"".txt"
+	    delete='-threads 1'
+	    d_p=${default_parameters[@]/$delete}
+	    ./word2vec -train pretrain_data/alldata-id.txt -output "$c_out" $model $d_p -threads 30 -binary 0 -min-count 1 -sentence-vectors 1
+	    wait
+	done
+	wait
+fi
+model = '-cbow 1 -sample 1e-4'
+delete='-threads 1'
+d_p=${default_parameters[@]/$delete}
+c_out="$C_IMDB_fold""word2vec -cbow 1 -sample 1e-4.txt"
+./word2vec -train pretrain_data/alldata-id.txt -output "$c_out" $model $d_p -threads 30 -binary 0 -min-count 1 -sentence-vectors 1
 
-for model in "${default_models[@]}"; do
-    for min_count in "${min_counts[@]}"; do
-        d2v_out="doc2vec ""$model""$min_count"".txt"
-        python3 run_doc2vec_proper.py -output "$d2v_IMDB_fold""$d2v_out" -train pretrain_data/alldata-id.txt $min_count $model $default_parameters &
-        #python3 run_doc2vec_20ng.py -output "$_20ng_fold""$d2v_out" $min_count $model $default_parameters &    
-    done
-    c_out="$C_IMDB_fold""word2vec ""$model"".txt"
-    delete='-threads 1'
-    d_p=${default_parameters[@]/$delete}
-    ./word2vec -train pretrain_data/alldata-id.txt -output "$c_out" $model $d_p -threads 30 -binary 0 -min-count 1 -sentence-vectors 1
-    wait
-done
-wait
-
-python3 IMDB_concat_dataframe.py -classifier linearsvc -vectors "$d2v_IMDB_fold"
-python3 IMDB_concat_dataframe.py -classifier lr -vectors "$d2v_IMDB_fold"
+#python3 IMDB_concat_dataframe.py -classifier linearsvc -vectors "$d2v_IMDB_fold"
+#python3 IMDB_concat_dataframe.py -classifier lr -vectors "$d2v_IMDB_fold"
 
 vec1="$C_IMDB_fold""word2vec ""${default_models[0]}"".txt"
 vec2="$C_IMDB_fold""word2vec ""${default_models[1]}"".txt"
