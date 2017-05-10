@@ -71,12 +71,7 @@ then
 	    wait
 	done
 	wait
-fi
-model = '-cbow 1 -sample 1e-4'
-delete='-threads 1'
-d_p=${default_parameters[@]/$delete}
-c_out="$C_IMDB_fold""word2vec -cbow 1 -sample 1e-4.txt"
-./word2vec -train pretrain_data/alldata-id.txt -output "$c_out" $model $d_p -threads 30 -binary 0 -min-count 1 -sentence-vectors 1
+
 
 #python3 IMDB_concat_dataframe.py -classifier linearsvc -vectors "$d2v_IMDB_fold"
 #python3 IMDB_concat_dataframe.py -classifier lr -vectors "$d2v_IMDB_fold"
@@ -87,7 +82,7 @@ concat="$C_IMDB_fold""concat_word2vec_mc1"
 python3 concat2models.py "$vec1" "$vec2" "$concat"
 sentence_vectors="$concat""_sentence_vectors"
 grep '_\*' "$concat" | sed -e 's/_\*//' | sort -n > "$sentence_vectors"
-
+fi
 mkdir c_eval
 # test
 head "$sentence_vectors" -n 25000 | awk 'BEGIN{a=0;}{if (a<12500) printf "1 "; else printf "-1 "; for (b=1; b<NF; b++) printf b ":" $(b+1) " "; print ""; a++;}' > c_eval/full-train.txt
