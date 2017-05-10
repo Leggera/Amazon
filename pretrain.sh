@@ -56,6 +56,7 @@ mkdir C_pretrained_IMDB
 C_IMDB_fold="C_pretrained_IMDB/"
 
 if false;
+then
 	echo "NO"
 	for model in "${default_models[@]}"; do
 	    for min_count in "${min_counts[@]}"; do
