@@ -47,7 +47,7 @@ cat ./pretrain_data/full-train-pos.txt ./pretrain_data/full-train-neg.txt ./pret
 awk 'BEGIN{a=0;}{print "_*" a " " $0; a++;}' < pretrain_data/alldata.txt > pretrain_data/alldata-id.txt
 
 default_models=('-cbow 0 -sample 1e-2' '-cbow 1 -sample 1e-4')
-default_parameters=('-size 150 -alpha 0.05 -window 10 -negative 25 -iter 25 -threads 1')
+default_parameters=('-size 150 -alpha 0.05 -window 10 -negative 25 -iter 25 -threads 32')
 min_counts=('-min_count 1' '-min_count 3')
 
 mkdir d2v_pretrained_IMDB
@@ -61,35 +61,12 @@ then
 	for model in "${default_models[@]}"; do
 	    for min_count in "${min_counts[@]}"; do
 		d2v_out="doc2vec ""$model""$min_count"".txt"
-		python3 run_doc2vec_proper.py -output "$d2v_IMDB_fold""$d2v_out" -train pretrain_data/alldata-id.txt $min_count $model $default_parameters &
+		python3 run_doc2vec_proper.py -output "$d2v_IMDB_fold""$d2v_out" -train pretrain_data/alldata-id.txt $min_count $model $default_parameters
 		#python3 run_doc2vec_20ng.py -output "$_20ng_fold""$d2v_out" $min_count $model $default_parameters &    
 	    done
-	    c_out="$C_IMDB_fold""word2vec ""$model"".txt"
-	    delete='-threads 1'
-	    d_p=${default_parameters[@]/$delete}
-	    ./word2vec -train pretrain_data/alldata-id.txt -output "$c_out" $model $d_p -threads 30 -binary 0 -min-count 1 -sentence-vectors 1
-	    wait
 	done
 	wait
 
 
 #python3 IMDB_concat_dataframe.py -classifier linearsvc -vectors "$d2v_IMDB_fold"
-#python3 IMDB_concat_dataframe.py -classifier lr -vectors "$d2v_IMDB_fold"
-
-vec1="$C_IMDB_fold""word2vec ""${default_models[0]}"".txt"
-vec2="$C_IMDB_fold""word2vec ""${default_models[1]}"".txt"
-concat="$C_IMDB_fold""concat_word2vec_mc1"
-python3 concat2models.py "$vec1" "$vec2" "$concat"
-sentence_vectors="$concat""_sentence_vectors"
-grep '_\*' "$concat" | sed -e 's/_\*//' | sort -n > "$sentence_vectors"
-fi
-mkdir c_eval
-# test
-head "$sentence_vectors" -n 25000 | awk 'BEGIN{a=0;}{if (a<12500) printf "1 "; else printf "-1 "; for (b=1; b<NF; b++) printf b ":" $(b+1) " "; print ""; a++;}' > c_eval/full-train.txt
-head "$sentence_vectors" -n 50000 | tail -n 25000 | awk 'BEGIN{a=0;}{if (a<12500) printf "1 "; else printf "-1 "; for (b=1; b<NF; b++) printf b ":" $(b+1) " "; print ""; a++;}' > c_eval/test.txt
-
-iclr15/scripts/install_liblinear.sh
-liblinear-1.96/train -s 0 c_eval/full-train.txt c_eval/model.logreg
-liblinear-1.96/predict -b 1 c_eval/full-train.txt c_eval/model.logreg c_eval/train.logreg
-liblinear-1.96/predict -b 1 c_eval/test.txt c_eval/model.logreg c_eval/out.logreg
-
+python3 IMDB_concat_dataframe.py -classifier lr -vectors "$d2v_IMDB_fold"
