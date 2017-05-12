@@ -14,6 +14,7 @@ import argparse
 from datetime import datetime
 import sys
 import traceback
+import pickle
 
 def DocumentVectors(model, model_name):
 
@@ -26,8 +27,11 @@ def DocumentVectors(model, model_name):
         DocumentVectors1 = [model_w2v[w] for w in vec_vocab[25000:50000]]
     elif(model_name == "doc2vec"): #TODO
         model_d2v = Doc2Vec.load(model)    #loading saved model 
-        DocumentVectors0 = [model_d2v.docvecs['SENT_'+str(i+1)] for i in range(0, 25000)] #first 25000 are labeled train data
-        DocumentVectors1 = [model_d2v.docvecs['SENT_'+str(i+1)] for i in range(25000, 50000)]#second 25000 are labeled test data
+        DocumentVectors0 = [model_d2v.docvecs['SENT_'+str(i)] for i in range(0, 25000)] #first 25000 are labeled train data
+        f = open(model + 'test', 'rb')
+        p = pickle.load(f)
+        DocumentVectors1 = np.concatenate([p[i][0].reshape(1, -1) for i in p])
+        #DocumentVectors1 = [model_d2v.docvecs['SENT_'+str(i)] for i in range(25000, 50000)]#second 25000 are labeled test data
         
     return (DocumentVectors0, DocumentVectors1)
 
@@ -84,6 +88,7 @@ def main(space_dir, classifier, C = None):
     default_parameters['alpha'] = 0.05
     default_parameters['window'] = 10
     default_parameters['negative'] = 25
+    default_parameters['min_count'] = 1
 
     if (C is not None): #if C was given as an input value then initialize classifier with it
         classifiers_dict['LogReg'] = LogReg(C = C)
