@@ -30,11 +30,11 @@ cat ./data/full-train-pos.txt ./data/full-train-neg.txt ./data/test-pos.txt ./da
 awk 'BEGIN{a=0;}{print "_*" a " " $0; a++;}' < alldata.txt > alldata-id.txt
 
 
-sizes=('-size 50' '-size 100' '-size 200')
-alphas=('-alpha 0.075' '-alpha 0.2')
-windows=('-window 15' '-window 25')
-negatives=('-negative 6' '-negative 30')
-models=('-cbow 1 -sample 3e-5' '-cbow 1 -sample 3e-4' '-cbow 1 -sample 3e-3' '-cbow 0 -sample 3e-3' '-cbow 0 -sample 3e-2' '-cbow 0 -sample 3e-1')
+#sizes=('-size 50' '-size 100' '-size 200')
+alphas=('-alpha 0.075')
+#windows=('-window 15' '-window 25')
+#negatives=('-negative 6' '-negative 30')
+#models=('-cbow 1 -sample 3e-5' '-cbow 1 -sample 3e-4' '-cbow 1 -sample 3e-3' '-cbow 0 -sample 3e-3' '-cbow 0 -sample 3e-2' '-cbow 0 -sample 3e-1')
 default_parameters=('-size 150 -alpha 0.05 -window 10 -negative 25 -iter 25 -threads 1 -min_count 1 -train alldata-id.txt')
 default_models=('-cbow 0 -sample 1e-2' '-cbow 1 -sample 1e-4')
 mkdir time_p2v
@@ -42,15 +42,15 @@ time_fold="time_p2v/"
 mkdir space_p2v
 space_fold="space_p2v/"
 for model in "${default_models[@]}"; do
-	for size in "${sizes[@]}"; do
-	    delete=("-size 150")
-	    d_p=${default_parameters[@]/$delete}
+	#for size in "${sizes[@]}"; do
+	    #delete=("-size 150")
+	    #d_p=${default_parameters[@]/$delete}
 	    #echo $d_p
 	    #echo $size
-	    d2v_out="doc2vec ""$model""$size"".txt"
-	    d2v_t="$time_fold""time_""$d2v_out"
-	    (time (python3 run_doc2vec_proper.py   -output "$space_fold""$d2v_out" $size $model $d_p >> "$d2v_t")) &>> "$d2v_t" &
-	done
+	    #d2v_out="doc2vec ""$model""$size"".txt"
+	    #d2v_t="$time_fold""time_""$d2v_out"
+	    #(time (python3 run_doc2vec_proper.py   -output "$space_fold""$d2v_out" $size $model $d_p >> "$d2v_t")) &>> "$d2v_t" &
+	#done
 	for alpha in "${alphas[@]}"; do
 	    delete=("-alpha 0.05")
 	    d_p=${default_parameters[@]/$delete}
@@ -60,30 +60,30 @@ for model in "${default_models[@]}"; do
 	    d2v_t="$time_fold""time_""$d2v_out"
 	    (time (python3 run_doc2vec_proper.py  -output "$space_fold""$d2v_out" $alpha $model $d_p >> "$d2v_t")) &>> "$d2v_t" &
 	done
-	for window in "${windows[@]}"; do
-	    delete=("-window 10")
-	    d_p=${default_parameters[@]/$delete}
+	#for window in "${windows[@]}"; do
+	    #delete=("-window 10")
+	    #d_p=${default_parameters[@]/$delete}
 	    #echo $d_p
 	    #echo $window
-	    d2v_out="doc2vec ""$model""$window"".txt"
-	    d2v_t="$time_fold""time_""$d2v_out"
-	    (time (python3 run_doc2vec_proper.py  -output "$space_fold""$d2v_out" $window $model $d_p >> "$d2v_t")) &>> "$d2v_t" &
-	done
-    for negative in "${negatives[@]}"; do
-	delete=("-negative 25")
-	d_p=${default_parameters[@]/$delete}
+	    #d2v_out="doc2vec ""$model""$window"".txt"
+	    #d2v_t="$time_fold""time_""$d2v_out"
+	    #(time (python3 run_doc2vec_proper.py  -output "$space_fold""$d2v_out" $window $model $d_p >> "$d2v_t")) &>> "$d2v_t" &
+	#done
+    #for negative in "${negatives[@]}"; do
+	#delete=("-negative 25")
+	#d_p=${default_parameters[@]/$delete}
 	#echo $d_p
 	#echo $negative
-	d2v_out="doc2vec ""$model""$negative"".txt"
-	d2v_t="$time_fold""time_""$d2v_out"
-	(time (python3 run_doc2vec_proper.py -output "$space_fold""$d2v_out" $negative $model $d_p >> "$d2v_t")) &>> "$d2v_t" &
-    done
+	#d2v_out="doc2vec ""$model""$negative"".txt"
+	#d2v_t="$time_fold""time_""$d2v_out"
+	#(time (python3 run_doc2vec_proper.py -output "$space_fold""$d2v_out" $negative $model $d_p >> "$d2v_t")) &>> "$d2v_t" &
+    #done
     #wait
 done
-for model in "${models[@]}"; do
-    d_p=${default_parameters[@]}
-    d2v_out="doc2vec ""$model"".txt"
-    d2v_t="$time_fold""time_""$d2v_out"
-    (time (python3 run_doc2vec_proper.py -output "$space_fold""$d2v_out" $model $d_p >> "$d2v_t")) &>> "$d2v_t" &
-done
+#for model in "${models[@]}"; do
+    #d_p=${default_parameters[@]}
+    #d2v_out="doc2vec ""$model"".txt"
+    #d2v_t="$time_fold""time_""$d2v_out"
+    #(time (python3 run_doc2vec_proper.py -output "$space_fold""$d2v_out" $model $d_p >> "$d2v_t")) &>> "$d2v_t" &
+#done
 wait
